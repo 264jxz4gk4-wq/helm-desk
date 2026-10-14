@@ -1,0 +1,31 @@
+# Publish the iPad app from an earlier build right away, without waiting for
+# the Mac builds of that run.
+name: Publish iPad app now
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Build run to take HelmDesk.ipa from"
+        required: true
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: HelmDesk-ipa
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: out
+      - uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+        with:
+          tag_name: latest
+          target_commitish: master
+          name: Helm Desk (latest build)
+          files: out/HelmDesk.ipa
