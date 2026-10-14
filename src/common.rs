@@ -1011,7 +1011,8 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
 }
 
 pub fn check_software_update() {
-    if is_custom_client() {
+    // Helm Desk: never offer to "update" to stock RustDesk.
+    if true {
         return;
     }
     let opt = LocalConfig::get_option(keys::OPTION_ENABLE_CHECK_UPDATE);
@@ -2655,7 +2656,8 @@ pub fn get_builtin_option(key: &str) -> String {
 
 #[inline]
 pub fn is_custom_client() -> bool {
-    get_app_name() != "RustDesk"
+    // Helm Desk: renamed app, but keep stock RustDesk behaviour and defaults.
+    false
 }
 
 pub fn verify_login(_raw: &str, _id: &str) -> bool {
